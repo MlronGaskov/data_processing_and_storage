@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'miron.gaskov'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'miron.gaskov.server.ServerMain'
+}
+
+tasks.register('runServer', JavaExec) {
+    group = 'application'
+    description = 'Run RSA key server'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'miron.gaskov.server.ServerMain'
+}
+
+tasks.register('runClient', JavaExec) {
+    group = 'application'
+    description = 'Run test client'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'miron.gaskov.client.ClientMain'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
